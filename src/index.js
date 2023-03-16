@@ -1,21 +1,15 @@
 import _ from 'lodash';
-import printMe from './print.js';
+import Task from './task.js';
 
+const button = document.createElement("button")
+button.innerHTML = "Add Task";
 
-function component() {
-    const element = document.createElement('div');
-    const btn = document.createElement('button');
+let task = new Task("Have aids", "3/3/23", "Extra high");
 
+const parentElement = document.body
 
-    element.innerHTML = _.join(['Hello', 'webpack'], ' ');
+parentElement.appendChild(button)
 
-    btn.innerHTML = 'Click on me and check the console!';
-    btn.onclick = printMe;
-
-    element.appendChild(btn);
-
-
-    return element;
-  }
-  
-  document.body.appendChild(component());
+button.onclick = function() {
+  console.log(task.getPriority);
+}
