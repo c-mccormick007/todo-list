@@ -14,13 +14,16 @@ if (JSON.parse(localStorage.getItem('TASKARRAY')) == null){
     for (let i = 0; i < taskData.length; i++){
         const task = new Task(taskData[i].name, taskData[i].description, taskData[i].date, taskData[i].priority, taskData[i].project)
         TASKARRAY.push(task)
+        logData();
     }
 }
 
-console.log(TASKARRAY)
 
 const body = document.body;
 const navbar = document.getElementById('navbar')
+const tasks = document.getElementById('taskcontainer')
+
+
 
 const createTaskButton = document.createElement("button")
 createTaskButton.innerHTML = "+";
@@ -36,10 +39,10 @@ navbar.appendChild(createTaskButton)
 navbar.appendChild(createProjectButton)
 
 
+
 }
 
 export function renderTaskInput(){
-    console.log("click")
     const overlay = document.createElement("div")
 
     overlay.className = "overlay";
@@ -125,6 +128,24 @@ export function createTaskForm() {
       const overlay = document.querySelector('.overlay');
       form.remove();
       overlay.remove();
+      logData();
     });
   }
+
+export function logData(){
+
+    const currentTasks = document.getElementById('taskcontainer')
+    currentTasks.innerHTML = '';
+
+
+    const tasks = document.getElementById('taskcontainer')
+
+    for (let i = 0; i < TASKARRAY.length; i++){
+        const task = document.createElement('div')
+        task.className = 'task';
+        task.innerHTML = `${TASKARRAY[i].name}`
+        tasks.appendChild(task)
+    }
+    console.log(TASKARRAY)
+}
 

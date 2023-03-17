@@ -1,6 +1,23 @@
+body {
+    display: flex;
+    flex-direction: column;
+    background-color: #153949;
+
+}
+
+#taskcontainer {
+    height: 100vh;
+    background-color: #f5f5f5;
+    background-image: linear-gradient(to bottom right, #cfbdbd, #ffffff);
+    border-radius: 5px;
+    box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.2);
+    padding: 20px;
+    margin: 10px;
+    margin-top: 15px;
+  }
+
 .button {
-    margin-left: 10px;
-    margin-right: 10px;
+    margin: 10px;
 }
 
 .taskbutton {
@@ -57,11 +74,19 @@
     align-items: center;
 }
 
+input, select {
+    margin: 10px;
+}
+
 .form {
-    position: relative;
-    z-index: 100;
+    position: absolute; 
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1000;
     display: grid;
     margin: 10px;
+
 }
 
 .overlay {
@@ -80,5 +105,26 @@
     color: white;
     font-size: 24px;
     text-align: center;
+  }
+
+  .task {
+    color: white; 
+    padding: 12px 24px;
+    font-size: 16px;
+    font-weight: bold;
+    text-transform: uppercase;
+    border: none;
+    border-radius: 4px;
+    color: #fff;
+    cursor: pointer;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+    transition: background-color 0.2s ease;
+    background: rgb(2,0,36);
+    background: linear-gradient(to bottom, #56CCF2, #2f80ed);
+    margin: 5px;
+  }
+
+  .task:hover {
+    background: linear-gradient(to bottom, #3a8fac, #195199);
   }
   
