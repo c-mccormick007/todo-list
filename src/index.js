@@ -1,17 +1,23 @@
 import _ from 'lodash';
+import './style.css'
 import Task from './task.js';
 import renderTask from './dom.js'
 
-const button = document.createElement("button")
-button.innerHTML = "Add Task";
 
-let taskTest = new Task("Get this project done", "Work on todo project", "3/3/23", "Extra high");
+const navbar = document.getElementById('navbar')
 
-const parentElement = document.body
+const createTaskButton = document.createElement("button")
+createTaskButton.innerHTML = "+";
+createTaskButton.className = "taskbutton button";
 
-parentElement.appendChild(button)
+const createProjectButton = document.createElement("button")
+createProjectButton.innerHTML = "+";
+createProjectButton.className = "projectbutton button";
 
-button.onclick = function() {
- 
-  renderTask(taskTest)
+
+
+navbar.appendChild(createTaskButton)
+navbar.appendChild(createProjectButton)
+
+createTaskButton.onclick = function() {
 }
