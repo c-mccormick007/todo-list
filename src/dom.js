@@ -1,8 +1,23 @@
 import Task from "./task";
 
-const TASKARRAY = []
+
+let TASKARRAY = []
 
 export function renderMain(){
+
+
+if (JSON.parse(localStorage.getItem('TASKARRAY')) == null){
+    console.log("INIT STORAGE...");
+}else{
+    const taskData = JSON.parse(localStorage.getItem('TASKARRAY'));
+
+    for (let i = 0; i < taskData.length; i++){
+        const task = new Task(taskData[i].name, taskData[i].description, taskData[i].date, taskData[i].priority, taskData[i].project)
+        TASKARRAY.push(task)
+    }
+}
+
+console.log(TASKARRAY)
 
 const body = document.body;
 const navbar = document.getElementById('navbar')
@@ -73,7 +88,7 @@ export function createTaskForm() {
     const projectSelect = document.createElement('select');
     projectSelect.name = 'project';
   
-    const projectOptions = ['Project A', 'Project B', 'Project C'];
+    const projectOptions = ["Projects not available yet."];
     for (let option of projectOptions) {
       const projectOption = document.createElement('option');
       projectOption.value = option;
@@ -102,10 +117,14 @@ export function createTaskForm() {
         project: projectSelect.value,
       }; */
     
-      console.log(task);
       TASKARRAY.push(task);
       const inputs = form.querySelectorAll('input:not([type="submit"])');
       inputs.forEach(input => (input.value = ""));
+      localStorage.setItem('TASKARRAY', JSON.stringify(TASKARRAY))
+      
+      const overlay = document.querySelector('.overlay');
+      form.remove();
+      overlay.remove();
     });
   }
 
