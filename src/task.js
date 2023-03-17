@@ -1,11 +1,13 @@
 export default class Task {
-    constructor(name, date, priority){
-        this._name = name;
-        this._date = date;
-        this._priority = priority; 
+    constructor(name, description, date, priority){
+        this.name = name;
+        this.description = description;
+        this.date = date;
+        this.priority = priority; 
+        this.status = "Not Done";
     }
 
-   get getName(){
+  /* get getName(){
     return this._name;
    }
    get getDate(){
@@ -14,6 +16,10 @@ export default class Task {
    get getPriority(){
     return this._priority;
    }
-
-   
+   get getDescription(){
+    return this._description;
+   }
+   get getStatus(){
+    return this._status;
+   } */
 }
