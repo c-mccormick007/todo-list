@@ -33,8 +33,12 @@ body {
   background: rgb(2,0,36);
   background: linear-gradient(to top, #075c1c, #56d402);
   margin: 5px;
-  padding-top: 30px;
 
+}
+
+.project {
+  text-align: center;
+  text-shadow: 1px 1px black;
 }
 
 @keyframes glow {
@@ -74,6 +78,7 @@ body {
     cursor: pointer;
     box-shadow: 0 2px 4px rgba(0,0,0,0.3);
     transition: background-color 0.2s ease;
+    text-shadow: 1px 1px black;
 }
 
 .taskbutton:hover {
@@ -98,6 +103,7 @@ body {
     cursor: pointer;
     box-shadow: 0 2px 4px rgba(0,0,0,0.3);
     transition: background-color 0.2s ease;
+    text-shadow: 1px 1px black;
 }
 
 .projectbutton:hover {
@@ -185,6 +191,7 @@ input, select {
     background-color: rgb(231, 231, 231);
     color: black;
     padding: 10px;
+    text-shadow: 0px 0px black;
   }
 
   .donebutton{

@@ -1,8 +1,10 @@
 import { remove } from "lodash";
 import Task from "./task";
+import Project from "./task";
 
 
 let TASKARRAY = []
+let PROJECTARRAY = []
 
 export function renderMain(){
   
@@ -228,21 +230,26 @@ export function orderByUrgency(arr){
     urgency: urgencyObj[task.priority]
   }));
 
-  console.log(taskUrgencyPairs)
   
   taskUrgencyPairs.sort((a, b) => a.urgency - b.urgency);
   let result = taskUrgencyPairs.map(pair => pair.task);
-  console.log(result)
   return result
 }
 
+/*
 export function defaultProject(projName){
   const defaultProj = document.createElement("div")
   const taskContainer = document.getElementById("taskcontainer")
   defaultProj.id = "project"
+  const defaultProjName = document.createElement("div");
+  defaultProjName.innerHTML = "Default Project";
+  defaultProjName.classList = 'project';
   defaultProj.classList = `${projName}`
   taskContainer.appendChild(defaultProj)
-}
+  defaultProj.appendChild(defaultProjName)
+  let defaultProjClass = new Project('Default Project', '3/3/11', 'Low')
+  console.log(defaultProjClass)
+} */
 
 
 export function logData(){
@@ -254,7 +261,7 @@ export function logData(){
     const tasks = document.getElementById('taskcontainer')
     
     TASKARRAY = orderByUrgency(TASKARRAY);
-    defaultProject("Default Project");
+    //defaultProject("Default Project");
 
     const defaultProj = document.getElementById('project')
 
@@ -280,7 +287,8 @@ export function logData(){
         nameDiv.innerHTML = `${TASKARRAY[i].name}`
         task.appendChild(nameDiv);
         task.appendChild(dateDiv);
-        defaultProj.appendChild(task);
+        tasks.appendChild(task);
+        //defaultProj.appendChild(task);
     }
 }
 
