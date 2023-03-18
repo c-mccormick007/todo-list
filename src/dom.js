@@ -1,3 +1,4 @@
+import { remove } from "lodash";
 import Task from "./task";
 
 
@@ -63,16 +64,47 @@ export function makeTaskButtons(){
 export function toggleDescription(taskId) {
   const task = document.getElementById(taskId);
   const descriptionDiv = task.querySelector('.description');
+  const doneBtn = task.querySelector('.donebutton');
 
   if (descriptionDiv) {
     descriptionDiv.remove();
+    doneBtn.remove();
   } else {
-    const description = TASKARRAY[taskId-1].description;
+    let arrayIndex = getIndexById(TASKARRAY, taskId)
+    const description = TASKARRAY[arrayIndex].description;
     const descriptionDiv = document.createElement("div");
+    const doneButton = document.createElement('button');
+    doneButton.innerHTML = "Finish";
+    doneButton.classList = "donebutton";
     descriptionDiv.innerHTML = description;
     descriptionDiv.className = "description";
     task.appendChild(descriptionDiv);
+    task.appendChild(doneButton);
+
+    doneButton.addEventListener("click", onDoneButtonClick);
   }
+}
+
+export function getIndexById(arr, id){
+  for (let i = 0; i < arr.length; i++) {
+    if (arr[i].id === Number(id)) {
+      console.log(i)
+      return i;
+    }
+  }
+  return -1;
+}
+
+export function onDoneButtonClick(event){
+    const task = event.target.closest('.task');
+    const id = task.getAttribute('id');
+    const index = getIndexById(TASKARRAY, id)
+
+    event.stopPropagation();
+    task.remove();
+    TASKARRAY.splice(index, 1);
+
+    localStorage.setItem('TASKARRAY', JSON.stringify(TASKARRAY))
 }
 
 export function renderTaskInput(){
@@ -178,9 +210,18 @@ export function logData(){
         const task = document.createElement('div')
         task.className = `task`;
         task.setAttribute('id', `${TASKARRAY[i].id}`)
-        task.innerHTML = `${TASKARRAY[i].name}`
-        tasks.appendChild(task)
+        const nameDiv = document.createElement('div');
+        nameDiv.className = 'taskname';
+        nameDiv.innerHTML = `${TASKARRAY[i].name}`
+        const dateDiv = document.createElement('div');
+        dateDiv.className = 'date';
+        let date = new Date(TASKARRAY[i].date);
+        let formattedDate = date.toLocaleDateString('en-US');
+        dateDiv.innerHTML = `${formattedDate}`
+        nameDiv.innerHTML = `${TASKARRAY[i].name}`
+        task.appendChild(nameDiv);
+        task.appendChild(dateDiv);
+        tasks.appendChild(task);
     }
-    console.log(TASKARRAY)
 }
 
