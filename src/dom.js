@@ -4,10 +4,20 @@ import Task from "./task";
 let TASKARRAY = []
 
 export function renderMain(){
+  
+
+const body = document.body;
+const navbar = document.getElementById('navbar')
+const tasks = document.getElementById('taskcontainer')
+
 
 
 if (JSON.parse(localStorage.getItem('TASKARRAY')) == null){
     console.log("INIT STORAGE...");
+    const noTasks = document.createElement("div");
+    noTasks.innerHTML = "You have not made any tasks yet. Click the blue plus to create one now!"
+    noTasks.className = "notasks";
+    tasks.appendChild(noTasks);
 }else{
     const taskData = JSON.parse(localStorage.getItem('TASKARRAY'));
 
@@ -17,11 +27,6 @@ if (JSON.parse(localStorage.getItem('TASKARRAY')) == null){
         logData();
     }
 }
-
-
-const body = document.body;
-const navbar = document.getElementById('navbar')
-const tasks = document.getElementById('taskcontainer')
 
 
 
@@ -38,8 +43,36 @@ createProjectButton.className = "projectbutton button";
 navbar.appendChild(createTaskButton)
 navbar.appendChild(createProjectButton)
 
+makeTaskButtons();
 
 
+
+}
+
+export function makeTaskButtons(){
+  let task = document.body.querySelectorAll('.task');
+  task.forEach(task => {
+    task.addEventListener("click", function() {
+      const div = this.closest('.task');
+      const id = div.getAttribute('id');
+      toggleDescription(id)
+    });
+  });
+}
+
+export function toggleDescription(taskId) {
+  const task = document.getElementById(taskId);
+  const descriptionDiv = task.querySelector('.description');
+
+  if (descriptionDiv) {
+    descriptionDiv.remove();
+  } else {
+    const description = TASKARRAY[taskId-1].description;
+    const descriptionDiv = document.createElement("div");
+    descriptionDiv.innerHTML = description;
+    descriptionDiv.className = "description";
+    task.appendChild(descriptionDiv);
+  }
 }
 
 export function renderTaskInput(){
@@ -129,6 +162,7 @@ export function createTaskForm() {
       form.remove();
       overlay.remove();
       logData();
+      makeTaskButtons();
     });
   }
 
@@ -142,7 +176,8 @@ export function logData(){
 
     for (let i = 0; i < TASKARRAY.length; i++){
         const task = document.createElement('div')
-        task.className = 'task';
+        task.className = `task`;
+        task.setAttribute('id', `${TASKARRAY[i].id}`)
         task.innerHTML = `${TASKARRAY[i].name}`
         tasks.appendChild(task)
     }

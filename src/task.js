@@ -1,5 +1,8 @@
 export default class Task {
+    static nextId = 1;
+
     constructor(name, description, date, priority, project){
+        this.id = Task.nextId++;
         this.name = name;
         this.description = description;
         this.date = date;

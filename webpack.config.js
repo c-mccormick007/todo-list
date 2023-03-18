@@ -17,6 +17,7 @@ module.exports = {
       template: 'src/template.html'
     }),
   ],
+  
     output: {
     filename: '[name].bundle.js',
     path: path.resolve(__dirname, 'dist'),
