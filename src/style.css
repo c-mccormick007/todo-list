@@ -102,13 +102,48 @@ input, select {
 
 .form {
     position: absolute; 
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
     z-index: 1000;
-    display: grid;
     margin: 10px;
+    background-color: #f2f2f2;
+    border-radius: 20px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+}
 
+input, select {
+  border: none;
+  border-radius: 10px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+  padding: 10px;
+  margin-bottom: 10px;
+  width: 100%;
+}
+
+.submit {
+  background-color: #00ec08; 
+  border: none; 
+  color: white; 
+  padding: 12px 24px; 
+  text-align: center; 
+  text-decoration: none; 
+  display: inline-block; 
+  font-size: 16px; 
+  border-radius: 10px; 
+  box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1); 
+  transition: all 0.3s ease 0s; 
+}
+
+.submit:hover, .submit:active {
+  cursor: pointer;
+  background-color: #3e8e41; /* Change the background color on hover */
+  box-shadow: 0px 15px 20px rgba(0, 0, 0, 0.3); /* Add a stronger shadow effect on hover */
+  transform: translateY(-1px); /* Move the button up a little on hover */
 }
 
 .overlay {
@@ -126,6 +161,36 @@ input, select {
   .description {
     font-size: 10px;
     margin-top: 5px;
+    border-radius: 10px;
+    margin: 10px;
+    background-color: rgb(231, 231, 231);
+    color: black;
+    padding: 10px;
+  }
+
+  .donebutton{
+    background-color: #00ec08; 
+    border: none; 
+    color: white;  
+    text-align: center; 
+    text-decoration: none; 
+    display: inline-block; 
+    font-size: 16px; 
+    border-radius: 10px; 
+    box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1); 
+    transition: all 0.3s ease 0s; 
+    padding: 5px;
+    width: 70%;
+    height: 70%;
+    justify-self: center;
+    align-self: center;
+  }
+
+  .donebutton:hover, button:active {
+    cursor: pointer;
+    background-color: #3e8e41; /* Change the background color on hover */
+    box-shadow: 0px 15px 20px rgba(0, 0, 0, 0.3); /* Add a stronger shadow effect on hover */
+    transform: translateY(-7px); /* Move the button up a little on hover */
   }
   
   .overlay p {
@@ -142,6 +207,72 @@ input, select {
     text-align: center;
   }
 
+  .task.urgent {
+    display: grid;
+    grid-template-columns: 75% 25%;
+    color: white; 
+    padding: 12px 24px;
+    font-size: 16px;
+    font-weight: bold;
+    border: none;
+    border-radius: 4px;
+    color: #fff;
+    cursor: pointer;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+    transition: background-color 0.2s ease;
+    background: rgb(2,0,36);
+    background: linear-gradient(to bottom, #ac2913, #ff1d1d);
+    margin: 5px;
+  }
+
+  .task.urgent:hover {
+    background: linear-gradient(to bottom, rgb(129, 43, 43), #af1414);
+  }
+  
+  .task.high {
+    display: grid;
+    grid-template-columns: 75% 25%;
+    color: white; 
+    padding: 12px 24px;
+    font-size: 16px;
+    font-weight: bold;
+    border: none;
+    border-radius: 4px;
+    color: #fff;
+    cursor: pointer;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+    transition: background-color 0.2s ease;
+    background: rgb(2,0,36);
+    background: linear-gradient(to bottom, #e2980e, #ffef0a);
+    margin: 5px;
+  }
+
+  .task.high:hover {
+    background: linear-gradient(to bottom, #926209, #a79c07);
+  }
+
+  .task.medium {
+    display: grid;
+    grid-template-columns: 75% 25%;
+    color: white; 
+    padding: 12px 24px;
+    font-size: 16px;
+    font-weight: bold;
+    border: none;
+    border-radius: 4px;
+    color: #fff;
+    cursor: pointer;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+    transition: background-color 0.2s ease;
+    background: rgb(2,0,36);
+    background: linear-gradient(to bottom, #0ee243, #6cff0a);
+    margin: 5px;
+  }
+
+  .task.medium:hover {
+    background: linear-gradient(to bottom, #0aa030, #5edf08);
+  }
+
   .task {
     display: grid;
     grid-template-columns: 75% 25%;
@@ -149,7 +280,6 @@ input, select {
     padding: 12px 24px;
     font-size: 16px;
     font-weight: bold;
-    text-transform: uppercase;
     border: none;
     border-radius: 4px;
     color: #fff;
@@ -165,3 +295,6 @@ input, select {
     background: linear-gradient(to bottom, #3a8fac, #195199);
   }
   
+  .taskname {
+    text-align: center;
+  }

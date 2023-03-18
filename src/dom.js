@@ -11,7 +11,13 @@ const body = document.body;
 const navbar = document.getElementById('navbar')
 const tasks = document.getElementById('taskcontainer')
 
-
+console.log(JSON.parse(localStorage.getItem('TASKARRAY')))
+if (JSON.parse(localStorage.getItem('TASKARRAY')) == null){
+  console.log("INIT STORAGE.");
+}else{
+let check = JSON.parse(localStorage.getItem('TASKARRAY'));
+length = check.length;
+}
 
 if (JSON.parse(localStorage.getItem('TASKARRAY')) == null){
     console.log("INIT STORAGE...");
@@ -19,7 +25,14 @@ if (JSON.parse(localStorage.getItem('TASKARRAY')) == null){
     noTasks.innerHTML = "You have not made any tasks yet. Click the blue plus to create one now!"
     noTasks.className = "notasks";
     tasks.appendChild(noTasks);
-}else{
+}else if (length === 0 && JSON.parse(localStorage.getItem('TASKARRAY')) !== null){
+  
+  const noTasks = document.createElement("div");
+  noTasks.innerHTML = "You have completed all your tasks! Click the blue + to add more."
+  noTasks.className = "notasks";
+  tasks.appendChild(noTasks);
+}
+else{
     const taskData = JSON.parse(localStorage.getItem('TASKARRAY'));
 
     for (let i = 0; i < taskData.length; i++){
@@ -105,6 +118,13 @@ export function onDoneButtonClick(event){
     TASKARRAY.splice(index, 1);
 
     localStorage.setItem('TASKARRAY', JSON.stringify(TASKARRAY))
+    if (TASKARRAY.length === 0 && JSON.parse(localStorage.getItem('TASKARRAY')) !== null){
+  
+      const noTasks = document.createElement("div");
+      noTasks.innerHTML = "You have completed all your tasks! Click the blue + to add more."
+      noTasks.className = "notasks";
+      document.getElementById('taskcontainer').appendChild(noTasks);
+    }
 }
 
 export function renderTaskInput(){
@@ -128,17 +148,20 @@ export function createTaskForm() {
     nameInput.type = 'text';
     nameInput.name = 'name';
     nameInput.placeholder = 'Enter task name';
+    nameInput.required = true;
     form.appendChild(nameInput);
   
     const descriptionInput = document.createElement('input');
     descriptionInput.type = 'text';
     descriptionInput.name = 'description';
     descriptionInput.placeholder = 'Enter task description';
+    descriptionInput.required = true;
     form.appendChild(descriptionInput);
   
     const dateInput = document.createElement('input');
     dateInput.type = 'date';
     dateInput.name = 'date';
+    nameInput.required = true;
     form.appendChild(dateInput);
   
     const prioritySelect = document.createElement('select');
@@ -168,6 +191,7 @@ export function createTaskForm() {
     const submitButton = document.createElement('input');
     submitButton.type = 'submit';
     submitButton.value = 'Create Task';
+    submitButton.classList = "submit";
     form.appendChild(submitButton);
 
     form.className = "form";
@@ -175,28 +199,24 @@ export function createTaskForm() {
     document.body.appendChild(form);
   
     form.addEventListener('submit', (event) => {
-      event.preventDefault();
-      const task = new Task(nameInput.value, descriptionInput.value, dateInput.value, prioritySelect.value,projectSelect.value)
-    /*  const task = {
-        name: nameInput.value,
-        description: descriptionInput.value,
-        date: dateInput.value,
-        priority: prioritySelect.value,
-        project: projectSelect.value,
-      }; */
-    
-      TASKARRAY.push(task);
-      const inputs = form.querySelectorAll('input:not([type="submit"])');
-      inputs.forEach(input => (input.value = ""));
-      localStorage.setItem('TASKARRAY', JSON.stringify(TASKARRAY))
-      
-      const overlay = document.querySelector('.overlay');
-      form.remove();
-      overlay.remove();
-      logData();
-      makeTaskButtons();
+        event.preventDefault();
+        const task = new Task(nameInput.value, descriptionInput.value, dateInput.value, prioritySelect.value,projectSelect.value)
+
+        TASKARRAY.push(task);
+        const inputs = form.querySelectorAll('input:not([type="submit"])');
+        inputs.forEach(input => (input.value = ""));
+        localStorage.setItem('TASKARRAY', JSON.stringify(TASKARRAY))
+        
+        const overlay = document.querySelector('.overlay');
+        form.remove();
+        overlay.remove();
+        logData();
+        makeTaskButtons();
     });
   }
+
+
+
 
 export function logData(){
 
@@ -210,6 +230,13 @@ export function logData(){
         const task = document.createElement('div')
         task.className = `task`;
         task.setAttribute('id', `${TASKARRAY[i].id}`)
+        if (TASKARRAY[i].priority === "Urgent"){
+          task.className += ' urgent';
+        }else if (TASKARRAY[i].priority === "High"){
+          task.className += ' high';
+        }else if (TASKARRAY[i].priority === "Medium"){
+          task.className += ' medium';
+        }
         const nameDiv = document.createElement('div');
         nameDiv.className = 'taskname';
         nameDiv.innerHTML = `${TASKARRAY[i].name}`
