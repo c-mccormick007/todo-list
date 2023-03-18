@@ -11,7 +11,6 @@ const body = document.body;
 const navbar = document.getElementById('navbar')
 const tasks = document.getElementById('taskcontainer')
 
-console.log(JSON.parse(localStorage.getItem('TASKARRAY')))
 if (JSON.parse(localStorage.getItem('TASKARRAY')) == null){
   console.log("INIT STORAGE.");
 }else{
@@ -37,7 +36,7 @@ else{
 
     for (let i = 0; i < taskData.length; i++){
         const task = new Task(taskData[i].name, taskData[i].description, taskData[i].date, taskData[i].priority, taskData[i].project)
-        TASKARRAY.push(task)
+        TASKARRAY.push(task);
         logData();
     }
 }
@@ -101,7 +100,6 @@ export function toggleDescription(taskId) {
 export function getIndexById(arr, id){
   for (let i = 0; i < arr.length; i++) {
     if (arr[i].id === Number(id)) {
-      console.log(i)
       return i;
     }
   }
@@ -210,12 +208,33 @@ export function createTaskForm() {
         const overlay = document.querySelector('.overlay');
         form.remove();
         overlay.remove();
+        
         logData();
         makeTaskButtons();
+        
     });
   }
 
+export function orderByUrgency(arr){
+  const urgencyObj = {
+    "Urgent": 1,
+    "High": 2,
+    "Medium": 3,
+    "Low": 4
+  };
 
+  const taskUrgencyPairs = arr.map(task => ({
+    task: task,
+    urgency: urgencyObj[task.priority]
+  }));
+
+  console.log(taskUrgencyPairs)
+  
+  taskUrgencyPairs.sort((a, b) => a.urgency - b.urgency);
+  let result = taskUrgencyPairs.map(pair => pair.task);
+  console.log(result)
+  return result
+}
 
 
 export function logData(){
@@ -225,6 +244,8 @@ export function logData(){
 
 
     const tasks = document.getElementById('taskcontainer')
+    
+    TASKARRAY = orderByUrgency(TASKARRAY);
 
     for (let i = 0; i < TASKARRAY.length; i++){
         const task = document.createElement('div')
