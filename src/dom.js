@@ -236,6 +236,14 @@ export function orderByUrgency(arr){
   return result
 }
 
+export function defaultProject(projName){
+  const defaultProj = document.createElement("div")
+  const taskContainer = document.getElementById("taskcontainer")
+  defaultProj.id = "project"
+  defaultProj.classList = `${projName}`
+  taskContainer.appendChild(defaultProj)
+}
+
 
 export function logData(){
 
@@ -246,6 +254,9 @@ export function logData(){
     const tasks = document.getElementById('taskcontainer')
     
     TASKARRAY = orderByUrgency(TASKARRAY);
+    defaultProject("Default Project");
+
+    const defaultProj = document.getElementById('project')
 
     for (let i = 0; i < TASKARRAY.length; i++){
         const task = document.createElement('div')
@@ -269,7 +280,7 @@ export function logData(){
         nameDiv.innerHTML = `${TASKARRAY[i].name}`
         task.appendChild(nameDiv);
         task.appendChild(dateDiv);
-        tasks.appendChild(task);
+        defaultProj.appendChild(task);
     }
 }
 
