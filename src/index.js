@@ -1,11 +1,12 @@
 import _ from 'lodash';
 import './style.css'
 import Task from './task.js';
-import {logData , renderMain, renderTaskInput} from './dom.js'
+import {createProjectForm, logData , renderMain, renderProject, renderTaskInput} from './dom.js'
 
 renderMain();
 
 let taskButton = document.querySelector('.taskbutton');
+let projectButton = document.querySelector('.projectbutton')
 
 taskButton.onclick = function() {
   renderTaskInput();
@@ -15,4 +16,8 @@ taskButton.onclick = function() {
   }else{
   noTasks.remove();
   }
+}
+
+projectButton.onclick = function() {
+  createProjectForm();
 }

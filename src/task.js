@@ -13,7 +13,10 @@ export default class Task {
 }
 
 export class Project {
+    static nextId = 10000000;
+
     constructor(name, dueDate, priority){
+        this.id = Project.nextId++;
         this.name = name;
         this.dueDate = dueDate;
         this.priority = priority; 

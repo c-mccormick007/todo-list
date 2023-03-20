@@ -18,7 +18,7 @@ body {
   background-color: #fff;
 }
 
-#project {
+.project {
   display: grid;
   color: white; 
   padding: 12px 24px;
@@ -31,9 +31,8 @@ body {
   box-shadow: 0 2px 4px rgba(0,0,0,0.3);
   transition: background-color 0.2s ease;
   background: rgb(2,0,36);
-  background: linear-gradient(to top, #075c1c, #56d402);
+  background: linear-gradient(to top, #000000, #30f829);
   margin: 5px;
-
 }
 
 .project {

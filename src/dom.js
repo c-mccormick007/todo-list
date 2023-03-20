@@ -13,6 +13,8 @@ const body = document.body;
 const navbar = document.getElementById('navbar')
 const tasks = document.getElementById('taskcontainer')
 
+
+
 if (JSON.parse(localStorage.getItem('TASKARRAY')) == null){
   console.log("INIT STORAGE.");
   makeDefaultProject();
@@ -30,19 +32,34 @@ if (JSON.parse(localStorage.getItem('TASKARRAY')) == null){
 }else if (length === 0 && JSON.parse(localStorage.getItem('TASKARRAY')) !== null){
   
   const noTasks = document.createElement("div");
+  const projectData = JSON.parse(localStorage.getItem('PROJECTARRAY'));
+
+    for (let j = 0; j < projectData.length; j++){
+      const project = new Project(projectData[j].name, projectData[j].dueDate, projectData[j].priority)
+      PROJECTARRAY.push(project);
+    }
+  logData()
   noTasks.innerHTML = "You have completed all your tasks! Click the blue + to add more."
   noTasks.className = "notasks";
   tasks.appendChild(noTasks);
 }
 else{
     const taskData = JSON.parse(localStorage.getItem('TASKARRAY'));
-
     for (let i = 0; i < taskData.length; i++){
+    const projectData = JSON.parse(localStorage.getItem('PROJECTARRAY'));
+
+    for (let j = 0; j < projectData.length; j++){
+      const project = new Project(projectData[j].name, projectData[j].dueDate, projectData[j].priority)
+      PROJECTARRAY.push(project);
+    }
+    
+      
         const task = new Task(taskData[i].name, taskData[i].description, taskData[i].date, taskData[i].priority, taskData[i].project)
         TASKARRAY.push(task);
         logData();
     }
 }
+
 
 
 
@@ -66,7 +83,7 @@ makeTaskButtons();
 export function makeDefaultProject(){
   let newProj = new Project("Default Project", "", "Low")
   PROJECTARRAY.push(newProj)
-  console.log("DEFAULT PROJECT ADDED", PROJECTARRAY)
+  localStorage.setItem('PROJECTARRAY', JSON.stringify(PROJECTARRAY))
 }
 
 export function makeTaskButtons(){
@@ -146,6 +163,68 @@ export function renderTask(task){
     document.body.appendChild(taskElement);
 }
 
+export function createProjectForm() {
+  const overlay = document.createElement("div")
+
+  overlay.className = "overlay";
+  document.body.appendChild(overlay);
+  
+  const form = document.createElement('form');
+    
+    const nameInput = document.createElement('input');
+    nameInput.type = 'text';
+    nameInput.name = 'name';
+    nameInput.placeholder = 'Enter project name';
+    nameInput.required = true;
+    form.appendChild(nameInput);
+  
+    const dateInput = document.createElement('input');
+    dateInput.type = 'date';
+    dateInput.name = 'date';
+    nameInput.required = true;
+    form.appendChild(dateInput);
+  
+    const prioritySelect = document.createElement('select');
+    prioritySelect.name = 'priority';
+  
+    const priorityOptions = ['Low', 'Medium', 'High'];
+    for (let option of priorityOptions) {
+      const priorityOption = document.createElement('option');
+      priorityOption.value = option;
+      priorityOption.text = option;
+      prioritySelect.appendChild(priorityOption);
+    }
+    form.appendChild(prioritySelect);
+  
+    const submitButton = document.createElement('input');
+    submitButton.type = 'submit';
+    submitButton.value = 'Create Project';
+    submitButton.classList = "submit";
+    form.appendChild(submitButton);
+
+    form.className = "form";
+    
+    document.body.appendChild(form);
+  
+    form.addEventListener('submit', (event) => {
+        event.preventDefault();
+        const project = new Project(nameInput.value, dateInput.value, prioritySelect.value)
+
+        PROJECTARRAY.push(project);
+        const inputs = form.querySelectorAll('input:not([type="submit"])');
+        inputs.forEach(input => (input.value = ""));
+        localStorage.setItem('PROJECTARRAY', JSON.stringify(PROJECTARRAY))
+        
+        const overlay = document.querySelector('.overlay');
+        form.remove();
+        overlay.remove();
+        
+        logData();
+        makeTaskButtons();
+        
+    });
+}
+
 export function createTaskForm() {
     const form = document.createElement('form');
     
@@ -183,8 +262,13 @@ export function createTaskForm() {
   
     const projectSelect = document.createElement('select');
     projectSelect.name = 'project';
-  
-    const projectOptions = ["Projects not available yet."];
+    
+    const projectOptions = [];
+
+    for (let i = 0; i < PROJECTARRAY.length; i++){
+      projectOptions.push(PROJECTARRAY[i].name)
+    }
+
     for (let option of projectOptions) {
       const projectOption = document.createElement('option');
       projectOption.value = option;
@@ -208,6 +292,7 @@ export function createTaskForm() {
         const task = new Task(nameInput.value, descriptionInput.value, dateInput.value, prioritySelect.value,projectSelect.value)
 
         TASKARRAY.push(task);
+        let projID = getProjectId(projectSelect.value)
         const inputs = form.querySelectorAll('input:not([type="submit"])');
         inputs.forEach(input => (input.value = ""));
         localStorage.setItem('TASKARRAY', JSON.stringify(TASKARRAY))
@@ -241,7 +326,31 @@ export function orderByUrgency(arr){
   return result
 }
 
+export function renderProject(){
 
+  PROJECTARRAY = orderByUrgency(PROJECTARRAY)
+  const taskContainer = document.getElementById('taskcontainer')
+  for (let i = 0; i < PROJECTARRAY.length; i++){
+    const project = document.createElement('div')
+    project.className = `project`;
+    project.setAttribute('id', `${PROJECTARRAY[i].id}`)
+    if (PROJECTARRAY[i].priority === "Urgent"){
+      project.className += ' urgent';
+    }else if (PROJECTARRAY[i].priority === "High"){
+      project.className += ' high';
+    }else if (PROJECTARRAY[i].priority === "Medium"){
+      project.className += ' medium';
+    }
+    const nameDiv = document.createElement('div');
+    nameDiv.className = 'taskname';
+    nameDiv.innerHTML = `${PROJECTARRAY[i].name}`
+    const dateDiv = document.createElement('div');
+    nameDiv.innerHTML = `${PROJECTARRAY[i].name}`
+    project.appendChild(nameDiv);
+    taskContainer.appendChild(project)
+
+}
+}
 
 
 export function logData(){
@@ -253,10 +362,15 @@ export function logData(){
     const tasks = document.getElementById('taskcontainer')
     
     TASKARRAY = orderByUrgency(TASKARRAY);
-
-    const defaultProj = document.getElementById('project')
+    
+    renderProject();
 
     for (let i = 0; i < TASKARRAY.length; i++){
+      console.log(TASKARRAY[i].project)
+        let currentProject = getProjectId(TASKARRAY[i].project)
+        console.log(currentProject)
+        let currentProjectDiv = document.getElementById(currentProject);
+        console.log(currentProjectDiv);
         const task = document.createElement('div')
         task.className = `task`;
         task.setAttribute('id', `${TASKARRAY[i].id}`)
@@ -278,7 +392,16 @@ export function logData(){
         nameDiv.innerHTML = `${TASKARRAY[i].name}`
         task.appendChild(nameDiv);
         task.appendChild(dateDiv);
-        tasks.appendChild(task);
+        currentProjectDiv.appendChild(task);
     }
 }
 
+export function getProjectId(name){
+  console.log(PROJECTARRAY)
+  for (let i = 0; i < PROJECTARRAY.length; i++) {
+    if (PROJECTARRAY[i].name === name) {
+      return PROJECTARRAY[i].id;
+    }
+  }
+  return null
+}
