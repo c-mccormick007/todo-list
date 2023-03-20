@@ -1,6 +1,6 @@
 import { remove } from "lodash";
 import Task from "./task";
-import Project from "./task";
+import {Project} from "./task";
 
 
 let TASKARRAY = []
@@ -15,6 +15,7 @@ const tasks = document.getElementById('taskcontainer')
 
 if (JSON.parse(localStorage.getItem('TASKARRAY')) == null){
   console.log("INIT STORAGE.");
+  makeDefaultProject();
 }else{
 let check = JSON.parse(localStorage.getItem('TASKARRAY'));
 length = check.length;
@@ -60,8 +61,12 @@ navbar.appendChild(createProjectButton)
 
 makeTaskButtons();
 
+}
 
-
+export function makeDefaultProject(){
+  let newProj = new Project("Default Project", "", "Low")
+  PROJECTARRAY.push(newProj)
+  console.log("DEFAULT PROJECT ADDED", PROJECTARRAY)
 }
 
 export function makeTaskButtons(){
@@ -236,20 +241,7 @@ export function orderByUrgency(arr){
   return result
 }
 
-/*
-export function defaultProject(projName){
-  const defaultProj = document.createElement("div")
-  const taskContainer = document.getElementById("taskcontainer")
-  defaultProj.id = "project"
-  const defaultProjName = document.createElement("div");
-  defaultProjName.innerHTML = "Default Project";
-  defaultProjName.classList = 'project';
-  defaultProj.classList = `${projName}`
-  taskContainer.appendChild(defaultProj)
-  defaultProj.appendChild(defaultProjName)
-  let defaultProjClass = new Project('Default Project', '3/3/11', 'Low')
-  console.log(defaultProjClass)
-} */
+
 
 
 export function logData(){
@@ -261,7 +253,6 @@ export function logData(){
     const tasks = document.getElementById('taskcontainer')
     
     TASKARRAY = orderByUrgency(TASKARRAY);
-    //defaultProject("Default Project");
 
     const defaultProj = document.getElementById('project')
 
@@ -288,7 +279,6 @@ export function logData(){
         task.appendChild(nameDiv);
         task.appendChild(dateDiv);
         tasks.appendChild(task);
-        //defaultProj.appendChild(task);
     }
 }
 
